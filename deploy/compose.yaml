@@ -1,0 +1,59 @@
+# lifeline-docking · 城市生命线数据上收开放平台（东京 VPS）
+#
+# 设计约束（与机上既有服务一致）：
+#   - 后端只监听 127.0.0.1:3110，绝不 0.0.0.0；公网访问一律经 Nginx
+#   - 复用既有 mysql 容器 gqxq-mysql（外部网络 gqxq-net），不新起数据库
+#   - 口令全部来自项目根目录 .env（chmod 600），本文件不含任何口令值
+#   - 上线形态：公网只开放 /data-docking-api/{token,execute/api}，
+#     /admin/** 与 /kb 在 Nginx 层 403（应用层无鉴权，见 README 第六节）
+#
+# 用法：cd deploy && docker compose up -d
+# 注意 env_file 指向 ../.env（项目根），与 compose.yaml 同级的 .env 不生效。
+
+name: lifeline
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+networks:
+  gqxq-net:
+    external: true
+    name: gqxq-net
+
+services:
+  lifeline-server:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: lifeline-docking:latest
+    container_name: lifeline-server
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      # 数据源指向既有 mysql 容器；库名/账号/口令由 ../.env 提供
+      SPRING_DATASOURCE_URL: jdbc:mysql://gqxq-mysql:3306/${LIFELINE_DB_NAME}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+      SPRING_DATASOURCE_USERNAME: ${LIFELINE_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${LIFELINE_DB_PASSWORD}
+      SERVER_PORT: "3110"
+      # 生产关闭调试台（会暴露接口清单与发送入口）
+      LIFELINE_DEBUG_ENABLED: "false"
+      LIFELINE_MASTER_KEY: ${LIFELINE_MASTER_KEY}
+    ports:
+      - "127.0.0.1:3110:3110"
+    networks: [gqxq-net]
+    logging: *logging
+    deploy:
+      resources:
+        limits:
+          memory: 768m
+    healthcheck:
+      # 探活走调用方入口之一：/data-docking-api/token 对非法签名返回 400/401，
+      # 只要 Tomcat 起来就会有响应（非连接错误）
+      test: ["CMD-SHELL", "wget -q -S -O /dev/null --post-data='{}' --header='Content-Type: application/json' http://127.0.0.1:3110/data-docking-api/token 2>&1 | grep -qE 'HTTP/1.[01] (400|401|415)' || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
