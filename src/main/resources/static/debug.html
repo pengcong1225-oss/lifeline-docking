@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>接口调试台 - 城市生命线数据上收开放平台</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script src="common.js"></script>
+<script>renderNav('debug.html');</script>
+<main>
+  <div class="notice danger">
+    调试发送会<b>真实调用老平台</b>。请仅在已获得测试环境与明确授权时使用，
+    并把模板里的占位示例值替换为真实测试数据 —— 直接发送等于向老平台推送伪造数据。
+  </div>
+  <div id="msg" class="notice" style="display:none"></div>
+
+  <div class="panel">
+    <h2>1. 选择凭证与接口</h2>
+    <div class="grid">
+      <div>
+        <label><span>使用哪个已登记凭证转发</span>
+          <select id="credential"><option value="">加载中…</option></select>
+        </label>
+        <label><span>业务接口（共 18 个）</span>
+          <select id="entry"><option value="">加载中…</option></select>
+        </label>
+        <label><span>批量条数</span><input id="count" type="number" value="1" min="1" max="100"></label>
+        <div class="row">
+          <button id="genBtn">生成报文模板</button>
+          <button class="ghost" id="formatBtn">格式化</button>
+        </div>
+      </div>
+      <div>
+        <div id="entryInfo" class="muted">选择接口后显示路由键与字段说明。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>2. 编辑报文并发送</h2>
+    <label><span>请求体（apiCmd + apiBody）</span>
+      <textarea id="body" class="code" spellcheck="false" placeholder="先点击「生成报文模板」"></textarea>
+    </label>
+    <div class="row">
+      <button id="sendBtn">发送到老平台</button>
+      <span class="muted">发送即完成「留存 → 入库 → 用该凭证的老令牌转发」完整链路</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>3. 处理结果</h2>
+    <div id="result"><div class="empty">尚未发送</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>字段说明</h2>
+    <div id="fields"><div class="empty">选择接口后显示</div></div>
+  </div>
+</main>
+<script>
+const msgEl = document.getElementById('msg');
+const credSel = document.getElementById('credential');
+const entrySel = document.getElementById('entry');
+const bodyEl = document.getElementById('body');
+const resultEl = document.getElementById('result');
+let entries = [];
+
+async function loadCredentials() {
+  try {
+    const items = await api.get('/admin/api/credentials');
+    const usable = items.filter(i => i.enabled);
+    credSel.innerHTML = usable.length
+      ? usable.map(i => '<option value="' + esc(i.accessKey) + '">' + esc(i.companyName || '(未命名)') +
+          ' — ' + esc(i.accessKey) + '</option>').join('')
+      : '<option value="">没有可用凭证，请先到「凭证登记」录入</option>';
+  } catch (e) {
+    credSel.innerHTML = '<option value="">加载失败：' + esc(e.message) + '</option>';
+  }
+}
+
+async function loadEntries() {
+  try {
+    const data = await api.get('/admin/api/interfaces');
+    entries = data.entries.filter(e => e.kind !== 'TOKEN');
+    entrySel.innerHTML = entries.map(e =>
+      '<option value="' + e.seq + '">' + e.seq + '. [' + esc(e.category) + '] ' + esc(e.name) +
+      '（' + e.dataFields.length + ' 字段）</option>').join('');
+    if (entries.length) await showEntry();
+  } catch (e) {
+    entrySel.innerHTML = '<option value="">加载失败：' + esc(e.message) + '</option>';
+  }
+}
+
+function currentEntry() {
+  return entries.find(e => String(e.seq) === entrySel.value);
+}
+
+async function showEntry() {
+  const e = currentEntry();
+  if (!e) return;
+  document.getElementById('entryInfo').innerHTML =
+    '<p><b>路由键</b><br><code>' + esc(e.routeLabel) + '</code></p>' +
+    '<p><b>请求</b><br><code>' + esc(e.method) + ' ' + esc(e.path) + '</code></p>' +
+    '<p class="muted">' + esc(e.category) + ' / ' + esc(e.name) + '，共 ' + e.dataFields.length + ' 个数据字段</p>';
+
+  document.getElementById('fields').innerHTML =
+    '<table><thead><tr><th>字段</th><th>类型</th><th>必填</th><th>说明</th><th>示例</th></tr></thead><tbody>' +
+    e.dataFields.map(f => '<tr><td><code>' + esc(f.name) + '</code></td><td>' + esc(f.type) + '</td>' +
+      '<td>' + (f.required ? '<span class="badge danger">必填</span>' : '<span class="badge">选填</span>') + '</td>' +
+      '<td class="muted">' + esc(f.desc) + '</td><td class="muted">' + esc(f.sample) + '</td></tr>').join('') +
+    '</tbody></table>';
+
+  await generate();
+}
+
+async function generate() {
+  const e = currentEntry();
+  if (!e) return;
+  const count = document.getElementById('count').value || 1;
+  try {
+    const data = await api.get('/admin/api/interfaces/' + e.seq + '/sample?count=' + count);
+    bodyEl.value = data.body;
+    toast(msgEl, data.warning, '');
+  } catch (err) {
+    toast(msgEl, '生成模板失败：' + err.message, 'danger');
+  }
+}
+
+document.getElementById('genBtn').onclick = generate;
+entrySel.onchange = showEntry;
+document.getElementById('formatBtn').onclick = () => {
+  try { bodyEl.value = JSON.stringify(JSON.parse(bodyEl.value), null, 2); }
+  catch (e) { toast(msgEl, '不是合法 JSON：' + e.message, 'danger'); }
+};
+
+document.getElementById('sendBtn').onclick = async () => {
+  const accessKey = credSel.value;
+  if (!accessKey) { toast(msgEl, '请先选择凭证', 'danger'); return; }
+  if (!bodyEl.value.trim()) { toast(msgEl, '报文不能为空', 'danger'); return; }
+  try { JSON.parse(bodyEl.value); }
+  catch (e) { toast(msgEl, '报文不是合法 JSON：' + e.message, 'danger'); return; }
+  if (!confirm('将用凭证 ' + accessKey + ' 向老平台真实发送该报文，确认继续？')) return;
+
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+  resultEl.innerHTML = '<div class="empty">发送中…</div>';
+  try {
+    const r = await api.send('POST', '/admin/api/debug/send', { accessKey, body: bodyEl.value });
+    resultEl.innerHTML =
+      '<p><b>状态</b> ' + statusBadge(r.status) + '</p>' +
+      '<p><b>说明</b> ' + esc(r.message) + '</p>' +
+      '<p><b>留存ID</b> <code>' + esc(r.recordId) + '</code>' +
+        '　<b>数据条数</b> ' + r.dataCount +
+        '　<b>已入库</b> ' + r.storedCount +
+        '　<b>重复跳过</b> ' + r.duplicateCount +
+        '　<b>路由已知</b> ' + (r.routeKnown ? '是' : '否（不在接口清单中）') + '</p>' +
+      '<p><b>返回给调用者的响应</b></p><pre>' + esc(JSON.stringify(r.response, null, 2)) + '</pre>' +
+      '<p class="muted">老平台原始响应请在「上收数据」页按留存ID查看。</p>';
+  } catch (e) {
+    const d = e.data || {};
+    resultEl.innerHTML = '<p><b>请求失败</b> ' + esc(d.message || e.message) + '</p>' +
+      '<pre>' + esc(JSON.stringify(d, null, 2)) + '</pre>';
+  } finally {
+    btn.disabled = false;
+  }
+};
+
+(async function () { await loadCredentials(); await loadEntries(); })();
+</script>
+</body>
+</html>

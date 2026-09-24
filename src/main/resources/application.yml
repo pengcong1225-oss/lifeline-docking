@@ -1,0 +1,72 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: lifeline-docking
+
+  datasource:
+    # createDatabaseIfNotExist=true：首次启动自动建库，再执行 schema.sql 建表
+    url: jdbc:mysql://localhost:3306/lifeline_docking?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    username: ${LIFELINE_DB_USER:root}
+    # 密码不设默认值：禁止把数据库口令写进仓库。
+    # 本地开发用 LIFELINE_DB_PASSWORD 环境变量，或复制 application-local.yml.example
+    # 为 application-local.yml（已在 .gitignore 中）后以 --spring.profiles.active=local 启动。
+    password: ${LIFELINE_DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      continue-on-error: false
+
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+
+lifeline:
+  # 老平台地址（文档只给了测试地址）。生产环境不得直接沿用明文 HTTP。
+  old-platform:
+    base-url: ${LIFELINE_OLD_BASE_URL:http://111.47.65.236:9910}
+    token-path: /data-docking-api/token
+    execute-path: /data-docking-api/execute/api
+    connect-timeout-ms: 3000
+    read-timeout-ms: 10000
+    # 取老令牌时参数传递方式：query 或 form。
+    # 接口页写 query、接入说明写 multipart/form-data，联调时用这个开关比对。
+    token-param-style: query
+  token:
+    # 新平台自签令牌有效期（秒）
+    ttl-seconds: 7200
+    # 老平台令牌本地缓存提前刷新余量（秒）
+    old-token-refresh-ahead-seconds: 120
+    # 老令牌本地缓存时长（秒）。源文档未给出真实有效期，先按保守窗口缓存。
+    old-token-cache-seconds: 1800
+  signature:
+    # 签名原文的参数顺序： sorted=按 key 升序； given=按文档书写顺序
+    # 源文档未定义参数顺序，联调时必须用真实请求样本确认。
+    param-order: sorted
+    # 时间戳允许偏差（秒）。源文档未定义，联调时确认。
+    timestamp-tolerance-seconds: 300
+  crypto:
+    # AES-256-GCM 主密钥（Base64，解码后 32 字节）。
+    # 生产必须由环境变量注入并妥善保管；更换或丢失主密钥会导致已登记的 secretKey 无法解密。
+    # 留空时启动生成临时密钥并打印警告：凭证在重启后不可解密。
+    master-key: ${LIFELINE_MASTER_KEY:}
+  debug:
+    # 调试台开关。生产环境应关闭（会暴露接口清单与发送入口）。
+    enabled: ${LIFELINE_DEBUG_ENABLED:true}
+
+logging:
+  level:
+    com.lifeline.docking: INFO

@@ -1,0 +1,2438 @@
+{
+  "source": "Apifox 分享文档 2026-09-23",
+  "generatedAt": "2026-09-23",
+  "sourceDoc": "E:\\ai-work\\docs\\2026-09-23-city-lifeline-api-docs\\artifacts\\接口字段明细.md",
+  "entries": [
+    {
+      "seq": 1,
+      "category": "接入准备",
+      "name": "获取接口请求鉴权",
+      "method": "POST",
+      "path": "/data-docking-api/token",
+      "contentType": "none",
+      "apiCmd": null,
+      "tag": null,
+      "operationType": null,
+      "kind": "TOKEN",
+      "queryParams": [
+        {
+          "name": "accessKey",
+          "type": "string",
+          "required": true,
+          "desc": "用户密钥"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "desc": "秒级别的请求时间戳"
+        },
+        {
+          "name": "signature",
+          "type": "string",
+          "required": true,
+          "desc": "加密密文，通过加密算法获取"
+        }
+      ],
+      "dataFields": [],
+      "responseFields": []
+    },
+    {
+      "seq": 2,
+      "category": "第三方施工信息",
+      "name": "第三方施工信息推送",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "lifeline_data_batch_acces",
+      "tag": "construction_info",
+      "operationType": null,
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "lsh",
+          "type": "string",
+          "required": true,
+          "desc": "流水号: 由dsbm + sjly + yskzjbz组成；最长 128；最短 8；正则 ^[a-zA-Z0-9]+$",
+          "sample": "420500ycrqqy2026092300001"
+        },
+        {
+          "name": "dsbm",
+          "type": "string",
+          "required": true,
+          "desc": "地市编码，见附录地市编码字典；最长 6；最短 0",
+          "sample": "420500"
+        },
+        {
+          "name": "qhbm",
+          "type": "string",
+          "required": true,
+          "desc": "区划编码，根据2022年中华人民共和国县以上行政区划代码上传；最长 6；最短 0",
+          "sample": "420502"
+        },
+        {
+          "name": "sjly",
+          "type": "string",
+          "required": true,
+          "desc": "数据来源（企业统一社会信用代码或拼音首字母简称）；正则 ^([0-9A-HJ-NPQRTUWXY]{18}|[a-zA-Z0-9]{4,20})$",
+          "sample": "ycrqqy"
+        },
+        {
+          "name": "sjtbzt",
+          "type": "string",
+          "required": true,
+          "desc": "数据同步状态；可选 I / D / U；正则 [IDU]",
+          "sample": "I"
+        },
+        {
+          "name": "sszx",
+          "type": "string",
+          "required": true,
+          "desc": "所属专项（csaqzx_rq 燃气、csaqzx_gs 供水等）",
+          "sample": "csaqzx_rq"
+        },
+        {
+          "name": "sgxxbh",
+          "type": "string",
+          "required": true,
+          "desc": "施工信息编号；最长 64；最短 0",
+          "sample": "TEST-SGXXBH"
+        },
+        {
+          "name": "sgddmc",
+          "type": "string",
+          "required": true,
+          "desc": "施工地点名称；最长 128；最短 0",
+          "sample": "待填写"
+        },
+        {
+          "name": "jd",
+          "type": "number",
+          "required": true,
+          "desc": "经度(cgcs2000)",
+          "sample": 111.2865
+        },
+        {
+          "name": "wd",
+          "type": "number",
+          "required": true,
+          "desc": "纬度(cgcs2000)",
+          "sample": 30.6919
+        },
+        {
+          "name": "sgxmmc",
+          "type": "string",
+          "required": true,
+          "desc": "施工项目名称；最长 128；最短 0",
+          "sample": "待填写"
+        },
+        {
+          "name": "jsfmc",
+          "type": "string",
+          "required": false,
+          "desc": "建设方名称；最长 128；最短 0",
+          "sample": "待填写"
+        },
+        {
+          "name": "sgfmc",
+          "type": "string",
+          "required": false,
+          "desc": "施工方名称；最长 128；最短 0",
+          "sample": "待填写"
+        },
+        {
+          "name": "kgsj",
+          "type": "string",
+          "required": false,
+          "desc": "开工时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "wgsj",
+          "type": "string",
+          "required": false,
+          "desc": "完工时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "gzs",
+          "type": "integer",
+          "required": false,
+          "desc": "告知书(0无,1有)；格式 int32",
+          "sample": 0
+        },
+        {
+          "name": "sfxy",
+          "type": "integer",
+          "required": false,
+          "desc": "四方协议(0无,1有)；格式 int32",
+          "sample": 0
+        },
+        {
+          "name": "xcjd",
+          "type": "integer",
+          "required": false,
+          "desc": "现场交底(0无,1有)；格式 int32",
+          "sample": 0
+        },
+        {
+          "name": "rcjh",
+          "type": "integer",
+          "required": false,
+          "desc": "日常监护(0无,1有)；格式 int32",
+          "sample": 0
+        },
+        {
+          "name": "xjryxm",
+          "type": "string",
+          "required": false,
+          "desc": "巡检人员姓名；最长 32；最短 0",
+          "sample": "张三"
+        },
+        {
+          "name": "xjrydh",
+          "type": "string",
+          "required": false,
+          "desc": "巡检人员电话",
+          "sample": "13800000000"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1；格式 int32"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 3,
+      "category": "第三方施工信息",
+      "name": "第三方施工进度推送",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "lifeline_data_batch_acces",
+      "tag": "construction_progress",
+      "operationType": null,
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "lsh",
+          "type": "string",
+          "required": true,
+          "desc": "流水号: 由dsbm + sjly + yskzjbz组成；最长 128；最短 8；正则 ^[a-zA-Z0-9]+$",
+          "sample": "420500ycrqqy2026092300001"
+        },
+        {
+          "name": "dsbm",
+          "type": "string",
+          "required": true,
+          "desc": "地市编码，见附录地市编码字典；最长 6；最短 0",
+          "sample": "420500"
+        },
+        {
+          "name": "qhbm",
+          "type": "string",
+          "required": true,
+          "desc": "区划编码，根据2022年中华人民共和国县以上行政区划代码上传；最长 6；最短 0",
+          "sample": "420502"
+        },
+        {
+          "name": "sjly",
+          "type": "string",
+          "required": true,
+          "desc": "数据来源（企业统一社会信用代码或拼音首字母简称）；正则 ^([0-9A-HJ-NPQRTUWXY]{18}|[a-zA-Z0-9]{4,20})$",
+          "sample": "ycrqqy"
+        },
+        {
+          "name": "sjtbzt",
+          "type": "string",
+          "required": true,
+          "desc": "数据同步状态；可选 I / D / U；正则 [IDU]",
+          "sample": "I"
+        },
+        {
+          "name": "sszx",
+          "type": "string",
+          "required": true,
+          "desc": "所属专项（csaqzx_rq 燃气、csaqzx_gs 供水等）",
+          "sample": "csaqzx_rq"
+        },
+        {
+          "name": "glsgxxbh",
+          "type": "string",
+          "required": true,
+          "desc": "关联第三方施工工单号(施工信息编号)；最长 64；最短 0",
+          "sample": "TEST-GLSGXXBH"
+        },
+        {
+          "name": "sgrq",
+          "type": "string",
+          "required": true,
+          "desc": "施工日期；格式 date",
+          "sample": "2026-09-23"
+        },
+        {
+          "name": "sgzt",
+          "type": "string",
+          "required": false,
+          "desc": "施工状态(0未开始 1施工中 2已完成)；最长 16；最短 0",
+          "sample": "待填写"
+        },
+        {
+          "name": "sgsfzc",
+          "type": "integer",
+          "required": false,
+          "desc": "施工是否正常：0否 1是；格式 int32",
+          "sample": 0
+        },
+        {
+          "name": "jsbz",
+          "type": "integer",
+          "required": false,
+          "desc": "警示标志：0未设置 1已设置；格式 int32",
+          "sample": 0
+        },
+        {
+          "name": "xjryxm",
+          "type": "string",
+          "required": false,
+          "desc": "巡检人员姓名；最长 32；最短 0",
+          "sample": "张三"
+        },
+        {
+          "name": "lxdh",
+          "type": "string",
+          "required": false,
+          "desc": "联系电话",
+          "sample": "13800000000"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1；格式 int32"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 4,
+      "category": "宜昌市燃气企业数据",
+      "name": "用户信息 / 【批量操作】保存或更新",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "inspection_third_party_data_access",
+      "tag": "risk",
+      "operationType": "I",
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "sszx",
+          "type": "string",
+          "required": true,
+          "desc": "所属专项，示例：csaqzx_rq",
+          "sample": "csaqzx_rq"
+        },
+        {
+          "name": "riskNumber",
+          "type": "string",
+          "required": true,
+          "desc": "企业隐患编号",
+          "sample": "TEST-RISKNUMBER"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "desc": "隐患标题",
+          "sample": "待填写"
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": true,
+          "desc": "隐患内容",
+          "sample": "待填写"
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "desc": "隐患地址",
+          "sample": "待填写"
+        },
+        {
+          "name": "reportUserId",
+          "type": "string",
+          "required": false,
+          "desc": "上报人用户id",
+          "sample": "待填写"
+        },
+        {
+          "name": "reportPersonName",
+          "type": "string",
+          "required": true,
+          "desc": "上报人姓名",
+          "sample": "张三"
+        },
+        {
+          "name": "reportTime",
+          "type": "string",
+          "required": true,
+          "desc": "隐患上报时间",
+          "sample": "待填写"
+        },
+        {
+          "name": "lon",
+          "type": "number",
+          "required": true,
+          "desc": "大地2000经度",
+          "sample": 111.2865
+        },
+        {
+          "name": "lat",
+          "type": "number",
+          "required": true,
+          "desc": "大地2000纬度",
+          "sample": 30.6919
+        },
+        {
+          "name": "zjjRiskCode",
+          "type": "string",
+          "required": true,
+          "desc": "住建局隐患编号，示例：420506203087100000080",
+          "sample": "420506203087100000080"
+        },
+        {
+          "name": "zjjRiskCtgFullCode",
+          "type": "string",
+          "required": true,
+          "desc": "住建局隐患分类编码，示例：2030871",
+          "sample": "2030871"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "boolean",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 5,
+      "category": "宜昌市燃气企业数据",
+      "name": "隐患信息 / 隐患信息推送请求",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "lifeline_data_batch_acces",
+      "tag": "ycrqqy_hazard",
+      "operationType": null,
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "lsh",
+          "type": "string",
+          "required": true,
+          "desc": "流水号: 由dsbm + sjly + yskzjbz组成；最长 128；最短 8；正则 ^[a-zA-Z0-9]+$",
+          "sample": "420500ycrqqy2026092300001"
+        },
+        {
+          "name": "dsbm",
+          "type": "string",
+          "required": true,
+          "desc": "地市编码，见附录地市编码字典；最长 6；最短 0",
+          "sample": "420500"
+        },
+        {
+          "name": "qhbm",
+          "type": "string",
+          "required": true,
+          "desc": "区划编码，根据2022年中华人民共和国县以上行政区划代码上传；最长 6；最短 0",
+          "sample": "420502"
+        },
+        {
+          "name": "sjly",
+          "type": "string",
+          "required": true,
+          "desc": "数据来源（企业统一社会信用代码或拼音首字母简称）；正则 ^([0-9A-HJ-NPQRTUWXY]{18}|[a-zA-Z0-9]{4,20})$",
+          "sample": "ycrqqy"
+        },
+        {
+          "name": "sjtbzt",
+          "type": "string",
+          "required": true,
+          "desc": "数据同步状态；可选 I / D / U；正则 [IDU]",
+          "sample": "I"
+        },
+        {
+          "name": "yhbh",
+          "type": "string",
+          "required": true,
+          "desc": "隐患编码",
+          "sample": "TEST-YHBH"
+        },
+        {
+          "name": "glmbbh",
+          "type": "string",
+          "required": false,
+          "desc": "关联目标编号",
+          "sample": "TEST-GLMBBH"
+        },
+        {
+          "name": "glmblx",
+          "type": "string",
+          "required": true,
+          "desc": "关联目标类型（参考关联目标类型字典表）",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhsbsj",
+          "type": "string",
+          "required": true,
+          "desc": "隐患上报时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "yhdl",
+          "type": "string",
+          "required": true,
+          "desc": "隐患大类（见专项类别字典）",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhxl",
+          "type": "string",
+          "required": true,
+          "desc": "隐患细类（见隐患类型字典）",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhly",
+          "type": "string",
+          "required": false,
+          "desc": "隐患来源（见隐患来源字典）",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhzrztmc",
+          "type": "string",
+          "required": false,
+          "desc": "隐患责任主体名称（所属责任主体全称）",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhmc",
+          "type": "string",
+          "required": true,
+          "desc": "隐患名称",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhdz",
+          "type": "string",
+          "required": true,
+          "desc": "隐患地址",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhdwjd",
+          "type": "number",
+          "required": true,
+          "desc": "隐患点位经度（大地2000坐标系）",
+          "sample": 0
+        },
+        {
+          "name": "yhdwwd",
+          "type": "number",
+          "required": true,
+          "desc": "隐患点位纬度（大地2000坐标系）",
+          "sample": 0
+        },
+        {
+          "name": "yhms",
+          "type": "string",
+          "required": false,
+          "desc": "隐患描述",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhxcwj",
+          "type": "string",
+          "required": false,
+          "desc": "隐患现场文件（调用附件上传接口时的fjbh）",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhdj",
+          "type": "string",
+          "required": true,
+          "desc": "隐患等级（见隐患等级字典）",
+          "sample": "待填写"
+        },
+        {
+          "name": "sbr",
+          "type": "string",
+          "required": true,
+          "desc": "上报人",
+          "sample": "待填写"
+        },
+        {
+          "name": "sbrlxfs",
+          "type": "string",
+          "required": false,
+          "desc": "上报人联系方式",
+          "sample": "13800000000"
+        },
+        {
+          "name": "yhzt",
+          "type": "string",
+          "required": true,
+          "desc": "隐患状态（见整改状态字典）",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhczdw",
+          "type": "string",
+          "required": false,
+          "desc": "隐患处置单位",
+          "sample": "待填写"
+        },
+        {
+          "name": "czfzr",
+          "type": "string",
+          "required": false,
+          "desc": "处置负责人",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhslsj",
+          "type": "string",
+          "required": false,
+          "desc": "隐患受理时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "yhczjs",
+          "type": "string",
+          "required": false,
+          "desc": "隐患处置简述",
+          "sample": "待填写"
+        },
+        {
+          "name": "yhczbg",
+          "type": "string",
+          "required": false,
+          "desc": "隐患处置报告（调用附件上传接口时的fjbh）",
+          "sample": "待填写"
+        },
+        {
+          "name": "czwcsj",
+          "type": "string",
+          "required": false,
+          "desc": "处置完成时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "mjcs",
+          "type": "integer",
+          "required": false,
+          "desc": "密集场所（1是 0否）；格式 int32",
+          "sample": 0
+        },
+        {
+          "name": "glzt",
+          "type": "string",
+          "required": false,
+          "desc": "关联主体",
+          "sample": "待填写"
+        },
+        {
+          "name": "sbdw",
+          "type": "string",
+          "required": false,
+          "desc": "上报单位",
+          "sample": "待填写"
+        },
+        {
+          "name": "zgqx",
+          "type": "string",
+          "required": false,
+          "desc": "整改期限；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "zgfa",
+          "type": "string",
+          "required": false,
+          "desc": "整改方案",
+          "sample": "待填写"
+        },
+        {
+          "name": "xydm",
+          "type": "string",
+          "required": true,
+          "desc": "统一社会信用代码",
+          "sample": "待填写"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1；格式 int32"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 6,
+      "category": "宜昌市燃气企业数据",
+      "name": "隐患处置记录信息 / 隐患处置信息推送请求",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "lifeline_data_batch_acces",
+      "tag": "ycrqqy_hazard_disposal",
+      "operationType": null,
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "lsh",
+          "type": "string",
+          "required": true,
+          "desc": "流水号: 由dsbm + sjly + yskzjbz组成；最长 128；最短 8；正则 ^[a-zA-Z0-9]+$",
+          "sample": "420500ycrqqy2026092300001"
+        },
+        {
+          "name": "dsbm",
+          "type": "string",
+          "required": true,
+          "desc": "地市编码，见附录地市编码字典；最长 6；最短 0",
+          "sample": "420500"
+        },
+        {
+          "name": "qhbm",
+          "type": "string",
+          "required": true,
+          "desc": "区划编码，根据2022年中华人民共和国县以上行政区划代码上传；最长 6；最短 0",
+          "sample": "420502"
+        },
+        {
+          "name": "sjly",
+          "type": "string",
+          "required": true,
+          "desc": "数据来源（企业统一社会信用代码或拼音首字母简称）；正则 ^([0-9A-HJ-NPQRTUWXY]{18}|[a-zA-Z0-9]{4,20})$",
+          "sample": "ycrqqy"
+        },
+        {
+          "name": "sjtbzt",
+          "type": "string",
+          "required": true,
+          "desc": "数据同步状态；可选 I / D / U；正则 [IDU]",
+          "sample": "I"
+        },
+        {
+          "name": "sszx",
+          "type": "string",
+          "required": true,
+          "desc": "所属专项（见专项类别字典）",
+          "sample": "csaqzx_rq"
+        },
+        {
+          "name": "glyhbh",
+          "type": "string",
+          "required": true,
+          "desc": "关联隐患编号（隐患信息表的隐患编号）",
+          "sample": "TEST-GLYHBH"
+        },
+        {
+          "name": "zgr",
+          "type": "string",
+          "required": false,
+          "desc": "整改人",
+          "sample": "待填写"
+        },
+        {
+          "name": "zgrdh",
+          "type": "string",
+          "required": false,
+          "desc": "整改人电话",
+          "sample": "13800000000"
+        },
+        {
+          "name": "zgzt",
+          "type": "string",
+          "required": true,
+          "desc": "整改状态（见整改状态字典）",
+          "sample": "待填写"
+        },
+        {
+          "name": "zgnr",
+          "type": "string",
+          "required": false,
+          "desc": "整改内容",
+          "sample": "待填写"
+        },
+        {
+          "name": "zgsj",
+          "type": "string",
+          "required": true,
+          "desc": "整改时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "zgrbm",
+          "type": "string",
+          "required": false,
+          "desc": "整改人部门",
+          "sample": "待填写"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1；格式 int32"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 7,
+      "category": "宜昌市燃气企业数据",
+      "name": "监测点位信息 / 监测点位信息推送请求",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "lifeline_data_batch_acces",
+      "tag": "ycrqqy_location",
+      "operationType": null,
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "lsh",
+          "type": "string",
+          "required": true,
+          "desc": "流水号: 由dsbm + sjly + yskzjbz组成；最长 128；最短 8；正则 ^[a-zA-Z0-9]+$",
+          "sample": "420500ycrqqy2026092300001"
+        },
+        {
+          "name": "dsbm",
+          "type": "string",
+          "required": true,
+          "desc": "地市编码，见附录地市编码字典；最长 6；最短 0",
+          "sample": "420500"
+        },
+        {
+          "name": "qhbm",
+          "type": "string",
+          "required": true,
+          "desc": "区划编码，根据2022年中华人民共和国县以上行政区划代码上传；最长 6；最短 0",
+          "sample": "420502"
+        },
+        {
+          "name": "sjly",
+          "type": "string",
+          "required": true,
+          "desc": "数据来源（企业统一社会信用代码或拼音首字母简称）；正则 ^([0-9A-HJ-NPQRTUWXY]{18}|[a-zA-Z0-9]{4,20})$",
+          "sample": "ycrqqy"
+        },
+        {
+          "name": "sjtbzt",
+          "type": "string",
+          "required": true,
+          "desc": "数据同步状态；可选 I / D / U；正则 [IDU]",
+          "sample": "I"
+        },
+        {
+          "name": "dwbm",
+          "type": "string",
+          "required": true,
+          "desc": "监测点位编号",
+          "sample": "TEST-DWBM"
+        },
+        {
+          "name": "dwmc",
+          "type": "string",
+          "required": true,
+          "desc": "监测点位名称",
+          "sample": "待填写"
+        },
+        {
+          "name": "jd",
+          "type": "number",
+          "required": true,
+          "desc": "经度（大地2000坐标系）",
+          "sample": 111.2865
+        },
+        {
+          "name": "wd",
+          "type": "number",
+          "required": true,
+          "desc": "纬度（大地2000坐标系）",
+          "sample": 30.6919
+        },
+        {
+          "name": "xydm",
+          "type": "string",
+          "required": true,
+          "desc": "统一社会信用代码",
+          "sample": "待填写"
+        },
+        {
+          "name": "jcwz",
+          "type": "string",
+          "required": true,
+          "desc": "监测位置",
+          "sample": "待填写"
+        },
+        {
+          "name": "glmbbh",
+          "type": "string",
+          "required": false,
+          "desc": "关联目标编号",
+          "sample": "TEST-GLMBBH"
+        },
+        {
+          "name": "glmblx",
+          "type": "string",
+          "required": true,
+          "desc": "关联目标类型",
+          "sample": "待填写"
+        },
+        {
+          "name": "dwlx",
+          "type": "string",
+          "required": true,
+          "desc": "点位类型（阀门井/调压箱/场站/门站/储备站）",
+          "sample": "待填写"
+        },
+        {
+          "name": "jcgx",
+          "type": "string",
+          "required": false,
+          "desc": "监测管线（次高压/中压/低压）",
+          "sample": "待填写"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1；格式 int32"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 8,
+      "category": "宜昌市燃气企业数据",
+      "name": "监测设备信息 / 监测设备信息推送请求",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "lifeline_data_batch_acces",
+      "tag": "ycrqqy_device",
+      "operationType": null,
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "lsh",
+          "type": "string",
+          "required": true,
+          "desc": "流水号: 由dsbm + sjly + yskzjbz组成；最长 128；最短 8；正则 ^[a-zA-Z0-9]+$",
+          "sample": "420500ycrqqy2026092300001"
+        },
+        {
+          "name": "dsbm",
+          "type": "string",
+          "required": true,
+          "desc": "地市编码，见附录地市编码字典；最长 6；最短 0",
+          "sample": "420500"
+        },
+        {
+          "name": "qhbm",
+          "type": "string",
+          "required": true,
+          "desc": "区划编码，根据2022年中华人民共和国县以上行政区划代码上传；最长 6；最短 0",
+          "sample": "420502"
+        },
+        {
+          "name": "sjly",
+          "type": "string",
+          "required": true,
+          "desc": "数据来源（企业统一社会信用代码或拼音首字母简称）；正则 ^([0-9A-HJ-NPQRTUWXY]{18}|[a-zA-Z0-9]{4,20})$",
+          "sample": "ycrqqy"
+        },
+        {
+          "name": "sjtbzt",
+          "type": "string",
+          "required": true,
+          "desc": "数据同步状态；可选 I / D / U；正则 [IDU]",
+          "sample": "I"
+        },
+        {
+          "name": "sbbh",
+          "type": "string",
+          "required": true,
+          "desc": "设备编号",
+          "sample": "TEST-SBBH"
+        },
+        {
+          "name": "sbmc",
+          "type": "string",
+          "required": true,
+          "desc": "设备名称",
+          "sample": "待填写"
+        },
+        {
+          "name": "sbxh",
+          "type": "string",
+          "required": false,
+          "desc": "设备型号",
+          "sample": "待填写"
+        },
+        {
+          "name": "yxqz",
+          "type": "string",
+          "required": false,
+          "desc": "有效期至；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "jczb",
+          "type": "string",
+          "required": true,
+          "desc": "监测指标（参照设备监测指标字典填报）",
+          "sample": "待填写"
+        },
+        {
+          "name": "sbyxzt",
+          "type": "string",
+          "required": true,
+          "desc": "运行状态（参照设备运行状态字典填报）",
+          "sample": "待填写"
+        },
+        {
+          "name": "azwz",
+          "type": "string",
+          "required": false,
+          "desc": "安装地点",
+          "sample": "待填写"
+        },
+        {
+          "name": "sblx",
+          "type": "string",
+          "required": true,
+          "desc": "设备类型（参照设备类型字典填报）",
+          "sample": "待填写"
+        },
+        {
+          "name": "glqylx",
+          "type": "string",
+          "required": true,
+          "desc": "燃气企业类型（glqylx0101：天然气运营企业；glqylx0301：瓶装液化气企业）",
+          "sample": "待填写"
+        },
+        {
+          "name": "ssqibm",
+          "type": "string",
+          "required": true,
+          "desc": "关联企业社会统一信用代码",
+          "sample": "待填写"
+        },
+        {
+          "name": "sbcsxx",
+          "type": "string",
+          "required": true,
+          "desc": "生产厂家（设备厂商信息）",
+          "sample": "待填写"
+        },
+        {
+          "name": "azsj",
+          "type": "string",
+          "required": true,
+          "desc": "安装日期；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "gldwbh",
+          "type": "string",
+          "required": true,
+          "desc": "关联点位编号（关联点位表的点位编号）",
+          "sample": "TEST-GLDWBH"
+        },
+        {
+          "name": "jgfs",
+          "type": "string",
+          "required": true,
+          "desc": "监管方式（见设备监管方式字典）",
+          "sample": "待填写"
+        },
+        {
+          "name": "cjpl",
+          "type": "string",
+          "required": false,
+          "desc": "采集频率",
+          "sample": "待填写"
+        },
+        {
+          "name": "scpl",
+          "type": "string",
+          "required": false,
+          "desc": "上传频率",
+          "sample": "待填写"
+        },
+        {
+          "name": "sbywzt",
+          "type": "string",
+          "required": false,
+          "desc": "设备运维状态（见设备运维状态字典）",
+          "sample": "待填写"
+        },
+        {
+          "name": "sbywdwxx",
+          "type": "string",
+          "required": false,
+          "desc": "设备运维单位信息",
+          "sample": "待填写"
+        },
+        {
+          "name": "xdgd",
+          "type": "number",
+          "required": false,
+          "desc": "相对高度",
+          "sample": 0
+        },
+        {
+          "name": "gdfs",
+          "type": "string",
+          "required": false,
+          "desc": "供电方式",
+          "sample": "待填写"
+        },
+        {
+          "name": "zcsxsj",
+          "type": "string",
+          "required": false,
+          "desc": "注册上线时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "dcdl",
+          "type": "number",
+          "required": false,
+          "desc": "电池电量",
+          "sample": 0
+        },
+        {
+          "name": "synx",
+          "type": "number",
+          "required": false,
+          "desc": "使用年限（单位：年）",
+          "sample": 0
+        },
+        {
+          "name": "dcghsj",
+          "type": "string",
+          "required": false,
+          "desc": "电池更换时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1；格式 int32"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 9,
+      "category": "宜昌市燃气企业数据",
+      "name": "实时监测数据 / 监测设备运行数据推送请求",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "lifeline_data_batch_acces",
+      "tag": "ycrqqy_realtime",
+      "operationType": null,
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "lsh",
+          "type": "string",
+          "required": true,
+          "desc": "流水号: 由dsbm + sjly + yskzjbz组成；最长 128；最短 8；正则 ^[a-zA-Z0-9]+$",
+          "sample": "420500ycrqqy2026092300001"
+        },
+        {
+          "name": "dsbm",
+          "type": "string",
+          "required": true,
+          "desc": "地市编码，见附录地市编码字典；最长 6；最短 0",
+          "sample": "420500"
+        },
+        {
+          "name": "qhbm",
+          "type": "string",
+          "required": true,
+          "desc": "区划编码，根据2022年中华人民共和国县以上行政区划代码上传；最长 6；最短 0",
+          "sample": "420502"
+        },
+        {
+          "name": "sjly",
+          "type": "string",
+          "required": true,
+          "desc": "数据来源（企业统一社会信用代码或拼音首字母简称）；正则 ^([0-9A-HJ-NPQRTUWXY]{18}|[a-zA-Z0-9]{4,20})$",
+          "sample": "ycrqqy"
+        },
+        {
+          "name": "sjtbzt",
+          "type": "string",
+          "required": true,
+          "desc": "数据同步状态；可选 I / D / U；正则 [IDU]",
+          "sample": "I"
+        },
+        {
+          "name": "sszx",
+          "type": "string",
+          "required": true,
+          "desc": "所属专项（参考附录-专项类别表）",
+          "sample": "csaqzx_rq"
+        },
+        {
+          "name": "gldwbh",
+          "type": "string",
+          "required": true,
+          "desc": "关联点位编号（关联监测对象点位编码）",
+          "sample": "TEST-GLDWBH"
+        },
+        {
+          "name": "sbbh",
+          "type": "string",
+          "required": true,
+          "desc": "设备编号（关联监测设备设备编号）",
+          "sample": "TEST-SBBH"
+        },
+        {
+          "name": "jcwz",
+          "type": "string",
+          "required": false,
+          "desc": "监测位置（监测位置描述）",
+          "sample": "待填写"
+        },
+        {
+          "name": "jcsj",
+          "type": "integer",
+          "required": true,
+          "desc": "监测时间戳（到毫秒）；格式 int32",
+          "sample": 1790128800000
+        },
+        {
+          "name": "jcz",
+          "type": "string",
+          "required": true,
+          "desc": "监测数据（监测项数据，对象数据组JSONString格式）",
+          "sample": "{}"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1；格式 int32"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 10,
+      "category": "宜昌市燃气企业数据",
+      "name": "设备报警信息 / 设备报警信息推送请求",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "lifeline_data_batch_acces",
+      "tag": "ycrqqy_alarm",
+      "operationType": null,
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "lsh",
+          "type": "string",
+          "required": true,
+          "desc": "流水号: 由dsbm + sjly + yskzjbz组成；最长 128；最短 8；正则 ^[a-zA-Z0-9]+$",
+          "sample": "420500ycrqqy2026092300001"
+        },
+        {
+          "name": "dsbm",
+          "type": "string",
+          "required": true,
+          "desc": "地市编码，见附录地市编码字典；最长 6；最短 0",
+          "sample": "420500"
+        },
+        {
+          "name": "qhbm",
+          "type": "string",
+          "required": true,
+          "desc": "区划编码，根据2022年中华人民共和国县以上行政区划代码上传；最长 6；最短 0",
+          "sample": "420502"
+        },
+        {
+          "name": "sjly",
+          "type": "string",
+          "required": true,
+          "desc": "数据来源（企业统一社会信用代码或拼音首字母简称）；正则 ^([0-9A-HJ-NPQRTUWXY]{18}|[a-zA-Z0-9]{4,20})$",
+          "sample": "ycrqqy"
+        },
+        {
+          "name": "sjtbzt",
+          "type": "string",
+          "required": true,
+          "desc": "数据同步状态；可选 I / D / U；正则 [IDU]",
+          "sample": "I"
+        },
+        {
+          "name": "bjbh",
+          "type": "string",
+          "required": true,
+          "desc": "报警编号",
+          "sample": "TEST-BJBH"
+        },
+        {
+          "name": "sbbh",
+          "type": "string",
+          "required": true,
+          "desc": "设备编号",
+          "sample": "TEST-SBBH"
+        },
+        {
+          "name": "gldwbh",
+          "type": "string",
+          "required": true,
+          "desc": "关联点位编号",
+          "sample": "TEST-GLDWBH"
+        },
+        {
+          "name": "jczb",
+          "type": "string",
+          "required": true,
+          "desc": "监测指标",
+          "sample": "待填写"
+        },
+        {
+          "name": "bjfl",
+          "type": "string",
+          "required": true,
+          "desc": "报警分类",
+          "sample": "待填写"
+        },
+        {
+          "name": "bjsz",
+          "type": "number",
+          "required": true,
+          "desc": "报警数值",
+          "sample": 0
+        },
+        {
+          "name": "bjsj",
+          "type": "string",
+          "required": true,
+          "desc": "报警时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "bjgd",
+          "type": "string",
+          "required": false,
+          "desc": "报警工单",
+          "sample": "待填写"
+        },
+        {
+          "name": "czsj",
+          "type": "string",
+          "required": false,
+          "desc": "处置时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "bjwz",
+          "type": "string",
+          "required": true,
+          "desc": "报警位置（报警位置描述）",
+          "sample": "待填写"
+        },
+        {
+          "name": "zgbjjb",
+          "type": "string",
+          "required": true,
+          "desc": "最高报警级别（无/一级/二级/三级）",
+          "sample": "待填写"
+        },
+        {
+          "name": "dqbjjb",
+          "type": "string",
+          "required": true,
+          "desc": "当前报警级别（无/一级/二级/三级）",
+          "sample": "待填写"
+        },
+        {
+          "name": "bjsfjc",
+          "type": "string",
+          "required": true,
+          "desc": "报警是否解除（0：否；1：是）；正则 [01]",
+          "sample": "待填写"
+        },
+        {
+          "name": "bjjcsj",
+          "type": "string",
+          "required": false,
+          "desc": "报警解除时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "bjjcsm",
+          "type": "string",
+          "required": false,
+          "desc": "报警解除说明",
+          "sample": "待填写"
+        },
+        {
+          "name": "xydm",
+          "type": "string",
+          "required": true,
+          "desc": "统一社会信用代码",
+          "sample": "待填写"
+        },
+        {
+          "name": "bjmc",
+          "type": "string",
+          "required": false,
+          "desc": "报警名称",
+          "sample": "待填写"
+        },
+        {
+          "name": "sblx",
+          "type": "string",
+          "required": false,
+          "desc": "设备类型（见设备类型字典表）",
+          "sample": "待填写"
+        },
+        {
+          "name": "ljbjpc",
+          "type": "integer",
+          "required": false,
+          "desc": "累计报警频次；格式 int32",
+          "sample": 0
+        },
+        {
+          "name": "zgbjsj",
+          "type": "string",
+          "required": false,
+          "desc": "最高报警时间；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "zgbjz",
+          "type": "number",
+          "required": false,
+          "desc": "最高报警值",
+          "sample": 0
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1；格式 int32"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 11,
+      "category": "宜昌市燃气企业数据",
+      "name": "报警处置信息 / 报警处置信息推送请求",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "lifeline_data_batch_acces",
+      "tag": "ycrqqy_alarm_disposal",
+      "operationType": null,
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "lsh",
+          "type": "string",
+          "required": true,
+          "desc": "流水号: 由dsbm + sjly + yskzjbz组成；最长 128；最短 8；正则 ^[a-zA-Z0-9]+$",
+          "sample": "420500ycrqqy2026092300001"
+        },
+        {
+          "name": "dsbm",
+          "type": "string",
+          "required": true,
+          "desc": "地市编码，见附录地市编码字典；最长 6；最短 0",
+          "sample": "420500"
+        },
+        {
+          "name": "qhbm",
+          "type": "string",
+          "required": true,
+          "desc": "区划编码，根据2022年中华人民共和国县以上行政区划代码上传；最长 6；最短 0",
+          "sample": "420502"
+        },
+        {
+          "name": "sjly",
+          "type": "string",
+          "required": true,
+          "desc": "数据来源（企业统一社会信用代码或拼音首字母简称）；正则 ^([0-9A-HJ-NPQRTUWXY]{18}|[a-zA-Z0-9]{4,20})$",
+          "sample": "ycrqqy"
+        },
+        {
+          "name": "sjtbzt",
+          "type": "string",
+          "required": true,
+          "desc": "数据同步状态；可选 I / D / U；正则 [IDU]",
+          "sample": "I"
+        },
+        {
+          "name": "glbjbh",
+          "type": "string",
+          "required": true,
+          "desc": "关联报警编号（报警工单号）",
+          "sample": "TEST-GLBJBH"
+        },
+        {
+          "name": "fksj",
+          "type": "string",
+          "required": true,
+          "desc": "反馈时间（处置时间）；格式 date-time",
+          "sample": "2026-09-23 10:00:00"
+        },
+        {
+          "name": "fkr",
+          "type": "string",
+          "required": true,
+          "desc": "反馈人（人名）",
+          "sample": "待填写"
+        },
+        {
+          "name": "fkdw",
+          "type": "string",
+          "required": true,
+          "desc": "反馈单位（单位名称）",
+          "sample": "待填写"
+        },
+        {
+          "name": "fkms",
+          "type": "string",
+          "required": true,
+          "desc": "反馈描述（文字描述）",
+          "sample": "待填写"
+        },
+        {
+          "name": "czzt",
+          "type": "string",
+          "required": true,
+          "desc": "处置状态（见处置状态字典）",
+          "sample": "待填写"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1；格式 int32"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 12,
+      "category": "宜昌市燃气企业数据",
+      "name": "第三方巡检人员管理 / 【批量操作】删除",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "inspection_third_party_data_access",
+      "tag": "inspector",
+      "operationType": "D",
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "enterpriseUserId",
+          "type": "object",
+          "required": true,
+          "desc": "",
+          "sample": {}
+        },
+        {
+          "name": "userId",
+          "type": "string",
+          "required": true,
+          "desc": "企业方用户ID",
+          "sample": "待填写"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "boolean",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 13,
+      "category": "宜昌市燃气企业数据",
+      "name": "第三方巡检人员管理 / 【批量操作】保存或更新",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "inspection_third_party_data_access",
+      "tag": "inspector",
+      "operationType": "I",
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "orgId",
+          "type": "object",
+          "required": false,
+          "desc": "",
+          "sample": {}
+        },
+        {
+          "name": "userId",
+          "type": "string",
+          "required": true,
+          "desc": "企业方用户ID；最长 255",
+          "sample": "待填写"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "desc": "巡检人员姓名；最长 50",
+          "sample": "张三"
+        },
+        {
+          "name": "cardNumber",
+          "type": "string",
+          "required": false,
+          "desc": "身份证号码；最长 18",
+          "sample": "待填写"
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "required": false,
+          "desc": "手机号码；最长 11",
+          "sample": "13800000000"
+        },
+        {
+          "name": "lifePhotos",
+          "type": "string",
+          "required": false,
+          "desc": "生活照片（base64格式）",
+          "sample": "待填写"
+        },
+        {
+          "name": "postName",
+          "type": "string",
+          "required": false,
+          "desc": "岗位名称；最长 50",
+          "sample": "待填写"
+        },
+        {
+          "name": "dutyArea",
+          "type": "string",
+          "required": false,
+          "desc": "责任区名称（多个责任区使用英文逗号拼接）；最长 255",
+          "sample": "待填写"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "boolean",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 14,
+      "category": "宜昌市燃气企业数据",
+      "name": "第三方巡检片区管理 / 【批量操作】保存或更新",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "inspection_third_party_data_access",
+      "tag": "district",
+      "operationType": "I",
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "businessId",
+          "type": "string",
+          "required": true,
+          "desc": "企业巡检片区业务ID；最长 255",
+          "sample": "待填写"
+        },
+        {
+          "name": "orgId",
+          "type": "object",
+          "required": true,
+          "desc": "",
+          "sample": {}
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "desc": "片区名称；最长 50",
+          "sample": "待填写"
+        },
+        {
+          "name": "geom",
+          "type": "string",
+          "required": true,
+          "desc": "片区点位（多边形坐标列表）",
+          "sample": "待填写"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "boolean",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 15,
+      "category": "宜昌市燃气企业数据",
+      "name": "第三方巡检片区管理 / 【批量操作】删除",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "inspection_third_party_data_access",
+      "tag": "district",
+      "operationType": "D",
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "businessId",
+          "type": "string",
+          "required": true,
+          "desc": "企业巡检片区业务ID；最长 255",
+          "sample": "待填写"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "boolean",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 16,
+      "category": "宜昌市燃气企业数据",
+      "name": "第三方巡检轨迹管理 / 【批量操作】保存或更新",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "inspection_third_party_data_access",
+      "tag": "route",
+      "operationType": "I",
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "orgId",
+          "type": "object",
+          "required": true,
+          "desc": "",
+          "sample": {}
+        },
+        {
+          "name": "userId",
+          "type": "string",
+          "required": true,
+          "desc": "企业方用户ID；最长 255",
+          "sample": "待填写"
+        },
+        {
+          "name": "lon",
+          "type": "number",
+          "required": true,
+          "desc": "大地2000经度",
+          "sample": 111.2865
+        },
+        {
+          "name": "lat",
+          "type": "number",
+          "required": true,
+          "desc": "大地2000纬度",
+          "sample": 30.6919
+        },
+        {
+          "name": "speed",
+          "type": "number",
+          "required": false,
+          "desc": "速度",
+          "sample": 0
+        },
+        {
+          "name": "receiveTime",
+          "type": "string",
+          "required": true,
+          "desc": "gps坐标接收时间",
+          "sample": "待填写"
+        },
+        {
+          "name": "receiveDate",
+          "type": "object",
+          "required": false,
+          "desc": "",
+          "sample": {}
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "boolean",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 17,
+      "category": "宜昌市燃气企业数据",
+      "name": "供气量信息 / 【每小时】供气量批量操作",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "lifeline_data_batch_acces",
+      "tag": "gspsp_gasflowhour",
+      "operationType": null,
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "lsh",
+          "type": "string",
+          "required": false,
+          "desc": "流水号: 由dsbm + sjly + yskzjbz组成",
+          "sample": "420500ycrqqy2026092300001"
+        },
+        {
+          "name": "dsbm",
+          "type": "string",
+          "required": true,
+          "desc": "地市编码，见附录地市编码字典；最长 6",
+          "sample": "420500"
+        },
+        {
+          "name": "qhbm",
+          "type": "string",
+          "required": true,
+          "desc": "区划编码，根据2022年中华人民共和国县以上行政区划代码上传；最长 6",
+          "sample": "420502"
+        },
+        {
+          "name": "sjly",
+          "type": "string",
+          "required": true,
+          "desc": "企业社会信用代码（数据来源）；正则 ^([0-9A-HJ-NPQRTUWXY]{18}|[a-zA-Z0-9]{4,20})$",
+          "sample": "ycrqqy"
+        },
+        {
+          "name": "sjtbzt",
+          "type": "string",
+          "required": false,
+          "desc": "数据同步状态",
+          "sample": "I"
+        },
+        {
+          "name": "creditCode",
+          "type": "string",
+          "required": true,
+          "desc": "社会统一信用代码；正则 ^([0-9A-HJ-NPQRTUWXY]{18}|[a-zA-Z0-9]{4,20})$",
+          "sample": "待填写"
+        },
+        {
+          "name": "dailyDate",
+          "type": "string",
+          "required": true,
+          "desc": "统计日期",
+          "sample": "待填写"
+        },
+        {
+          "name": "hour",
+          "type": "integer",
+          "required": true,
+          "desc": "小时",
+          "sample": 0
+        },
+        {
+          "name": "flow",
+          "type": "number",
+          "required": true,
+          "desc": "当时累计流量",
+          "sample": 0
+        },
+        {
+          "name": "remark",
+          "type": "string",
+          "required": false,
+          "desc": "备注",
+          "sample": "待填写"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "boolean",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 18,
+      "category": "宜昌市燃气企业数据",
+      "name": "第三方巡检隐患管理 / 【批量操作】保存或更新",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "inspection_third_party_data_access",
+      "tag": "risk",
+      "operationType": "I",
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "sszx",
+          "type": "string",
+          "required": true,
+          "desc": "所属专项，示例：csaqzx_rq",
+          "sample": "csaqzx_rq"
+        },
+        {
+          "name": "riskNumber",
+          "type": "string",
+          "required": true,
+          "desc": "企业隐患编号",
+          "sample": "TEST-RISKNUMBER"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "desc": "隐患标题",
+          "sample": "待填写"
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": true,
+          "desc": "隐患内容",
+          "sample": "待填写"
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "desc": "隐患地址",
+          "sample": "待填写"
+        },
+        {
+          "name": "reportUserId",
+          "type": "string",
+          "required": false,
+          "desc": "上报人用户id",
+          "sample": "待填写"
+        },
+        {
+          "name": "reportPersonName",
+          "type": "string",
+          "required": true,
+          "desc": "上报人姓名",
+          "sample": "张三"
+        },
+        {
+          "name": "reportTime",
+          "type": "string",
+          "required": true,
+          "desc": "隐患上报时间",
+          "sample": "待填写"
+        },
+        {
+          "name": "lon",
+          "type": "number",
+          "required": true,
+          "desc": "大地2000经度",
+          "sample": 111.2865
+        },
+        {
+          "name": "lat",
+          "type": "number",
+          "required": true,
+          "desc": "大地2000纬度",
+          "sample": 30.6919
+        },
+        {
+          "name": "zjjRiskCode",
+          "type": "string",
+          "required": true,
+          "desc": "住建局隐患编号，示例：420506203087100000080",
+          "sample": "420506203087100000080"
+        },
+        {
+          "name": "zjjRiskCtgFullCode",
+          "type": "string",
+          "required": true,
+          "desc": "住建局隐患分类编码，示例：2030871",
+          "sample": "2030871"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "boolean",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    },
+    {
+      "seq": 19,
+      "category": "宜昌市燃气企业数据",
+      "name": "第三方巡检隐患处置管理 / 【批量操作】保存或更新",
+      "method": "POST",
+      "path": "/data-docking-api/execute/api",
+      "contentType": "application/json",
+      "apiCmd": "inspection_third_party_data_access",
+      "tag": "riskDispose",
+      "operationType": "I",
+      "kind": "BUSINESS",
+      "queryParams": [],
+      "dataFields": [
+        {
+          "name": "riskNumber",
+          "type": "string",
+          "required": true,
+          "desc": "企业隐患编号",
+          "sample": "TEST-RISKNUMBER"
+        },
+        {
+          "name": "disposeUserId",
+          "type": "string",
+          "required": false,
+          "desc": "处置人用户id",
+          "sample": "待填写"
+        },
+        {
+          "name": "disposeUserName",
+          "type": "string",
+          "required": true,
+          "desc": "处置人姓名",
+          "sample": "张三"
+        },
+        {
+          "name": "disposeUserPhone",
+          "type": "string",
+          "required": false,
+          "desc": "处置人电话",
+          "sample": "13800000000"
+        },
+        {
+          "name": "disposeContent",
+          "type": "string",
+          "required": true,
+          "desc": "处置内容",
+          "sample": "待填写"
+        },
+        {
+          "name": "disposeTime",
+          "type": "string",
+          "required": true,
+          "desc": "处置时间",
+          "sample": "待填写"
+        },
+        {
+          "name": "disposeStatus",
+          "type": "string",
+          "required": true,
+          "desc": "处置状态：0-处置中，1-处置完成",
+          "sample": "待填写"
+        }
+      ],
+      "responseFields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "desc": "返回标记：成功标记=0，失败标记=1"
+        },
+        {
+          "name": "msg",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "desc": "返回信息"
+        },
+        {
+          "name": "data",
+          "type": "boolean",
+          "required": false,
+          "desc": "数据"
+        }
+      ]
+    }
+  ]
+}

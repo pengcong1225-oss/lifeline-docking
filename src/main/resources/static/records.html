@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>上收数据 - 城市生命线数据上收开放平台</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script src="common.js"></script>
+<script>renderNav('records.html');</script>
+<main>
+  <div class="panel">
+    <h2>筛选</h2>
+    <div class="row">
+      <label style="margin:0"><span>状态</span>
+        <select id="status" style="width:180px">
+          <option value="">全部</option>
+          <option>ACCEPTED_OLD</option>
+          <option>REJECTED_OLD</option>
+          <option>REJECTED_LOCAL</option>
+          <option>UNKNOWN</option>
+          <option>RECEIVED</option>
+        </select>
+      </label>
+      <label style="margin:0"><span>数据标签 tag</span><input id="tag" style="width:220px" placeholder="如 ycrqqy_alarm"></label>
+      <label style="margin:0"><span>条数</span><input id="limit" type="number" value="50" min="1" max="500" style="width:100px"></label>
+      <button id="queryBtn">查询</button>
+      <button class="ghost" id="refreshBtn">刷新</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>留存记录</h2>
+    <div id="list"><div class="empty">加载中…</div></div>
+  </div>
+
+  <div class="panel" id="detailPanel" style="display:none">
+    <h2>记录详情</h2>
+    <div id="detail"></div>
+  </div>
+</main>
+<script>
+const listEl = document.getElementById('list');
+const detailEl = document.getElementById('detail');
+const detailPanel = document.getElementById('detailPanel');
+
+async function query() {
+  const status = document.getElementById('status').value;
+  const tag = document.getElementById('tag').value.trim();
+  const limit = document.getElementById('limit').value || 50;
+  const params = new URLSearchParams({ limit });
+  if (status) params.set('status', status);
+  if (tag) params.set('tag', tag);
+
+  try {
+    const data = await api.get('/admin/api/records?' + params.toString());
+    if (!data.items.length) { listEl.innerHTML = '<div class="empty">没有符合条件的记录</div>'; return; }
+    listEl.innerHTML = '<table><thead><tr><th>接收时间</th><th>来源</th><th>调用者</th><th>路由键</th>' +
+      '<th>条数</th><th>状态</th><th>说明</th><th></th></tr></thead><tbody>' +
+      data.items.map(r => '<tr>' +
+        '<td class="muted">' + fmtTime(r.receivedAt) + '</td>' +
+        '<td>' + (r.source === 'DEBUG' ? '<span class="badge info">调试</span>' : '<span class="badge">调用者</span>') + '</td>' +
+        '<td><code>' + esc(r.accessKey) + '</code></td>' +
+        '<td class="muted">' + esc(r.apiCmd) + ' / ' + esc(r.tag) +
+          (r.operationType ? ' / ' + esc(r.operationType) : '') + '</td>' +
+        '<td>' + r.dataCount + (r.storedCount ? ' <span class="muted">(存' + r.storedCount +
+          (r.duplicateCount ? ',重' + r.duplicateCount : '') + ')</span>' : '') + '</td>' +
+        '<td>' + statusBadge(r.status) + '</td>' +
+        '<td class="muted">' + esc(r.message) + '</td>' +
+        '<td><button class="ghost small" onclick="detail(\'' + r.recordId + '\')">详情</button></td>' +
+      '</tr>').join('') + '</tbody></table>';
+  } catch (e) {
+    listEl.innerHTML = '<div class="empty">加载失败：' + esc(e.message) + '</div>';
+  }
+}
+
+window.detail = async (recordId) => {
+  detailPanel.style.display = 'block';
+  detailEl.innerHTML = '<div class="empty">加载中…</div>';
+  try {
+    const d = await api.get('/admin/api/records/' + recordId);
+    const r = d.record;
+    detailEl.innerHTML =
+      '<p><b>留存ID</b> <code>' + esc(r.recordId) + '</code>　<b>状态</b> ' + statusBadge(r.status) + '</p>' +
+      '<p><b>老平台业务码</b> ' + (r.oldPlatformCode === null || r.oldPlatformCode === undefined
+        ? '<span class="muted">未取得</span>' : r.oldPlatformCode) +
+        '　<b>转发完成</b> ' + fmtTime(r.forwardedAt) + '</p>' +
+      '<p><b>说明</b> ' + esc(r.message) + '</p>' +
+      '<h3 style="font-size:13px">原始请求体</h3><pre>' + esc(r.rawBody) + '</pre>' +
+      '<h3 style="font-size:13px">老平台原始响应</h3><pre>' +
+        esc(r.oldResponse || '(无：未转发或结果未知)') + '</pre>' +
+      '<h3 style="font-size:13px">已入库数据项（' + d.items.length + '）</h3>' +
+      (d.items.length
+        ? '<table><thead><tr><th>#</th><th>lsh</th><th>数据</th></tr></thead><tbody>' +
+          d.items.map(i => '<tr><td>' + i.itemIndex + '</td><td class="muted">' + esc(i.lsh || '-') +
+            '</td><td><pre style="max-height:220px">' + esc(i.payload) + '</pre></td></tr>').join('') +
+          '</tbody></table>'
+        : '<div class="empty">该请求没有数据项</div>');
+    detailPanel.scrollIntoView({ behavior: 'smooth' });
+  } catch (e) {
+    detailEl.innerHTML = '<div class="empty">加载失败：' + esc(e.message) + '</div>';
+  }
+};
+
+document.getElementById('queryBtn').onclick = query;
+document.getElementById('refreshBtn').onclick = query;
+query();
+</script>
+</body>
+</html>

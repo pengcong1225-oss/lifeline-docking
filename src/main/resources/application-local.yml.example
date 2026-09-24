@@ -1,0 +1,11 @@
+# 本地开发配置模板。
+#
+# 复制为 application-local.yml（该文件已在 .gitignore 中，不会入库）后按需修改，
+# 启动时加 --spring.profiles.active=local。
+#
+# 绝不把真实口令提交到 Git。
+
+spring:
+  datasource:
+    username: root
+    password: your-local-password

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>概览 - 城市生命线数据上收开放平台</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script src="common.js"></script>
+<script>renderNav('index.html');</script>
+<main>
+  <div class="notice">
+    调用者只替换接口地址，继续使用老平台分配的 <b>accessKey/secretKey</b> 与原请求协议。
+    新平台独立验签并发自己的令牌；业务数据先留存入库，再用调用者原凭证在内部取老令牌转发。
+    只有老平台业务 <b>code=0</b> 才报成功。
+  </div>
+
+  <div class="panel">
+    <h2>运行概览</h2>
+    <div class="stat-grid" id="stats"><div class="empty">加载中…</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>接口清单</h2>
+      <div id="catalog"><div class="empty">加载中…</div></div>
+    </div>
+    <div class="panel">
+      <h2>快速入口</h2>
+      <p><a href="credentials.html">凭证登记</a> —— 企业录入自己老平台的 accessKey/secretKey，密钥加密保存。</p>
+      <p><a href="debug.html">接口调试台</a> —— 覆盖全部 18 个业务接口，按字段清单生成报文并实际发送。</p>
+      <p><a href="records.html">上收数据</a> —— 查看留存记录、入库数据项与老平台的原始响应。</p>
+      <p><a href="kb/index.html"><b>知识库</b></a> —— 接口清单、路由陷阱、字段约定、数据字典、架构与联调阻塞项，可直接分享给协作方。</p>
+      <div class="notice" style="margin-top:16px">
+        调试台与正式推送走同一条链路（留存 → 入库 → 转发），不存在跳过留存的旁路。
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+(async function () {
+  const statsEl = document.getElementById('stats');
+  const catalogEl = document.getElementById('catalog');
+  try {
+    const s = await api.get('/admin/api/stats');
+    const order = ['RECEIVED', 'ACCEPTED_OLD', 'REJECTED_OLD', 'REJECTED_LOCAL', 'UNKNOWN'];
+    const label = {
+      RECEIVED: '已留存未转发', ACCEPTED_OLD: '老平台已接受', REJECTED_OLD: '老平台已拒绝',
+      REJECTED_LOCAL: '新平台拒绝', UNKNOWN: '结果未知',
+    };
+    statsEl.innerHTML =
+      '<div class="stat"><div class="num">' + s.records + '</div><div class="lbl">留存请求总数</div></div>' +
+      '<div class="stat"><div class="num">' + s.storedItems + '</div><div class="lbl">已入库数据项</div></div>' +
+      order.map(k => '<div class="stat"><div class="num">' + (s.byStatus[k] || 0) + '</div><div class="lbl">' +
+        label[k] + '</div></div>').join('');
+  } catch (e) {
+    statsEl.innerHTML = '<div class="empty">读取统计失败：' + esc(e.message) + '</div>';
+  }
+  try {
+    const c = await api.get('/admin/api/interfaces');
+    catalogEl.innerHTML =
+      '<p class="muted">共 ' + c.total + ' 个条目（业务 ' + c.businessCount + ' 个），来源：' + esc(c.source) + '</p>' +
+      '<table><thead><tr><th>#</th><th>业务类别</th><th>接口</th><th>路由键</th><th>字段数</th></tr></thead><tbody>' +
+      c.entries.map(e => '<tr><td>' + e.seq + '</td><td>' + esc(e.category) + '</td><td>' + esc(e.name) +
+        '</td><td class="muted">' + esc(e.routeLabel) + '</td><td>' + e.dataFields.length + '</td></tr>').join('') +
+      '</tbody></table>';
+  } catch (e) {
+    catalogEl.innerHTML = '<div class="empty">接口清单不可用（调试台可能已关闭）：' + esc(e.message) + '</div>';
+  }
+})();
+</script>
+</body>
+</html>
